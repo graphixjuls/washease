@@ -19,3 +19,4 @@ export function StepRow({ number, title, text }: StepRowProps) {
     </div>
   );
 }
+

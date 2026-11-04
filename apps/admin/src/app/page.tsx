@@ -1,166 +1,159 @@
-'use client';
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Smartphone, LayoutDashboard, ArrowRight, CheckCircle2, Sparkles, Disc } from 'lucide-react';
 
-import React, { useState, useEffect } from 'react';
-import { AdminSidebar, AdminTab } from '@/components/AdminSidebar';
-import { DashboardView } from '@/components/DashboardView';
-import { MachinesView } from '@/components/MachinesView';
-import { ResidentsView } from '@/components/ResidentsView';
-import { ActivityView } from '@/components/ActivityView';
-import { PaymentsView } from '@/components/PaymentsView';
-import { RulesView } from '@/components/RulesView';
-import { SettingsView } from '@/components/SettingsView';
-import { ResidentApp } from '@/components/resident/ResidentApp';
-import { Smartphone, Monitor, Menu, Sun, Moon } from 'lucide-react';
-
-export type AppMode = 'resident' | 'admin';
-
-export default function HomePage() {
-  const [appMode, setAppMode] = useState<AppMode>('resident');
-  const [adminTab, setAdminTab] = useState<AdminTab>('dashboard');
-  const [isDark, setIsDark] = useState<boolean>(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const [showPhoneFrame, setShowPhoneFrame] = useState<boolean>(true);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (prefersDark) {
-        setIsDark(true);
-        document.documentElement.setAttribute('data-theme', 'dark');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-
-      // If opening on a mobile screen, default to resident mobile app
-      if (window.innerWidth < 768) {
-        setAppMode('resident');
-        setShowPhoneFrame(false);
-      }
-    }
-  }, []);
-
-  const handleToggleTheme = () => {
-    setIsDark((prev) => {
-      const next = !prev;
-      document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
-      return next;
-    });
-  };
-
+export default function GatewayPage() {
   return (
-    <div className="min-h-screen bg-canvas font-body text-text-primary flex flex-col">
-      {/* Top Universal App Switcher Bar */}
-      <header className="sticky top-0 z-50 bg-surface/90 backdrop-blur-md border-b border-border-default px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3 shadow-xs">
-        {/* Left: Brand & Mobile Menu */}
-        <div className="flex items-center gap-3 min-w-0">
-          {appMode === 'admin' && (
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="lg:hidden p-1.5 rounded-md text-text-secondary hover:text-text-primary hover:bg-canvas"
-            >
-              <Menu className="w-5 h-5" />
-            </button>
-          )}
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="w-7 h-7 rounded-md bg-brand-primary flex items-center justify-center text-text-on-brand font-bold text-xs shadow flex-shrink-0">
-              W
-            </div>
-            <div className="font-heading font-bold text-base text-text-primary truncate hidden sm:block">
+    <div className="min-h-screen bg-canvas text-text-primary flex flex-col justify-between selection:bg-brand-tint">
+      {/* Top Header */}
+      <header className="px-6 sm:px-12 py-5 border-b border-border-default/80 flex items-center justify-between bg-surface/60 backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-md bg-brand-primary flex items-center justify-center text-text-on-brand font-bold text-base shadow">
+            W
+          </div>
+          <div>
+            <div className="font-heading font-bold text-lg text-text-primary leading-tight">
               WashEase
             </div>
+            <div className="text-xs text-text-secondary">Laundry, on your time.</div>
           </div>
         </div>
 
-        {/* Center: Interactive Mode Switcher */}
-        <div className="flex items-center bg-subtle p-1 rounded-full border border-border-default shadow-inner">
-          <button
-            onClick={() => setAppMode('resident')}
-            className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-              appMode === 'resident'
-                ? 'bg-brand-primary text-text-on-brand shadow'
-                : 'text-text-secondary hover:text-text-primary'
-            }`}
+        <div className="flex items-center gap-3 text-xs font-semibold">
+          <Link
+            href="/app"
+            className="px-3.5 py-2 rounded-full bg-subtle text-text-secondary hover:text-text-primary transition-colors"
           >
-            <Smartphone className="w-3.5 h-3.5 flex-shrink-0" />
-            <span>Resident App</span>
-          </button>
-          <button
-            onClick={() => setAppMode('admin')}
-            className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-              appMode === 'admin'
-                ? 'bg-brand-primary text-text-on-brand shadow'
-                : 'text-text-secondary hover:text-text-primary'
-            }`}
+            Resident App
+          </Link>
+          <Link
+            href="/admin"
+            className="px-3.5 py-2 rounded-full bg-brand-primary text-text-on-brand hover:bg-brand-strong transition-colors shadow"
           >
-            <Monitor className="w-3.5 h-3.5 flex-shrink-0" />
-            <span>Admin Web</span>
-          </button>
-        </div>
-
-        {/* Right: Theme Toggle & Phone Frame toggle */}
-        <div className="flex items-center gap-2">
-          {appMode === 'resident' && (
-            <button
-              onClick={() => setShowPhoneFrame((prev) => !prev)}
-              title="Toggle Phone Frame"
-              className="hidden md:flex items-center gap-1 text-[11px] font-semibold text-text-secondary hover:text-text-primary px-2.5 py-1.5 rounded-md border border-border-default hover:bg-canvas"
-            >
-              <Smartphone className="w-3.5 h-3.5" />
-              <span>{showPhoneFrame ? 'Frame: ON' : 'Frame: OFF'}</span>
-            </button>
-          )}
-
-          <button
-            onClick={handleToggleTheme}
-            className="p-2 rounded-md text-text-secondary hover:text-text-primary border border-border-default hover:bg-canvas transition-colors"
-            title="Toggle Light/Dark Theme"
-          >
-            {isDark ? (
-              <Moon className="w-4 h-4 text-brand-primary" />
-            ) : (
-              <Sun className="w-4 h-4 text-status-warning" />
-            )}
-          </button>
+            Admin Dashboard
+          </Link>
         </div>
       </header>
 
-      {/* Main Content Area */}
-      {appMode === 'resident' ? (
-        /* ================= RESIDENT APP VIEW ================= */
-        <div className="flex-1 flex items-center justify-center py-0 sm:py-8 px-0 sm:px-4 bg-canvas min-w-0">
-          <div
-            className={`w-full transition-all ${
-              showPhoneFrame
-                ? 'max-w-md sm:rounded-3xl sm:border sm:border-border-default sm:shadow-2xl overflow-hidden bg-canvas'
-                : 'max-w-xl'
-            }`}
-          >
-            <ResidentApp onSwitchToAdmin={() => setAppMode('admin')} />
+      {/* Main Hero & Split Portal Cards */}
+      <main className="flex-1 max-w-5xl w-full mx-auto px-6 py-12 sm:py-16 flex flex-col items-center justify-center space-y-12">
+        <div className="text-center space-y-4 max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-tint text-brand-primary">
+            <Sparkles className="w-3.5 h-3.5" />
+            Designed directly from Figma (Pages 06, 07 & 08)
           </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold font-heading text-text-primary leading-tight">
+            Select Your WashEase Experience
+          </h1>
+          <p className="text-sm sm:text-base text-text-secondary leading-relaxed">
+            WashEase provides two separate, dedicated products: the resident mobile app for tenants
+            reserving washers and dryers, and the web management dashboard for property managers.
+          </p>
         </div>
-      ) : (
-        /* ================= ADMIN WEB PORTAL VIEW ================= */
-        <div className="flex-1 flex min-h-0 bg-canvas min-w-0">
-          <AdminSidebar
-            activeTab={adminTab}
-            onSelectTab={setAdminTab}
-            isDark={isDark}
-            onToggleTheme={handleToggleTheme}
-            isOpenMobile={isMobileMenuOpen}
-            onCloseMobile={() => setIsMobileMenuOpen(false)}
-          />
 
-          <main className="flex-1 p-4 sm:p-6 lg:p-10 overflow-y-auto max-w-7xl min-w-0">
-            {adminTab === 'dashboard' && <DashboardView onNavigate={setAdminTab} />}
-            {adminTab === 'machines' && <MachinesView />}
-            {adminTab === 'residents' && <ResidentsView />}
-            {adminTab === 'activity' && <ActivityView />}
-            {adminTab === 'payments' && <PaymentsView />}
-            {adminTab === 'rules' && <RulesView />}
-            {adminTab === 'settings' && <SettingsView />}
-          </main>
+        {/* Two Dedicated Portal Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+          {/* Card 1: Resident App */}
+          <Link
+            href="/app"
+            className="group relative p-8 rounded-2xl bg-surface border-2 border-border-default hover:border-brand-primary shadow-card hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+          >
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="w-14 h-14 rounded-xl bg-brand-tint text-brand-primary flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <Smartphone className="w-7 h-7" />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-brand-primary bg-brand-tint px-3 py-1 rounded-full">
+                  Figma Page 07
+                </span>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-bold font-heading text-text-primary group-hover:text-brand-primary transition-colors">
+                  Resident App
+                </h2>
+                <p className="text-sm text-text-secondary mt-2 leading-relaxed">
+                  For apartment residents reserving machines on their phones. Features live availability,
+                  10-minute walk-down holds, Bluetooth unlock, and real-time cycle progress rings.
+                </p>
+              </div>
+
+              <div className="space-y-2 text-xs text-text-secondary pt-2 border-t border-border-default/60">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-status-success flex-shrink-0" />
+                  <span>Reserve free machines now (no time slots)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-status-success flex-shrink-0" />
+                  <span>10-minute hold timer & Bluetooth unlock</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-status-success flex-shrink-0" />
+                  <span>Floating pill tab bar & clean native mobile UI</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 flex items-center gap-2 text-sm font-bold text-brand-primary group-hover:translate-x-1 transition-transform">
+              <span>Open Resident App</span>
+              <ArrowRight className="w-4 h-4" />
+            </div>
+          </Link>
+
+          {/* Card 2: Building Manager Admin Web */}
+          <Link
+            href="/admin"
+            className="group relative p-8 rounded-2xl bg-surface border-2 border-border-default hover:border-brand-primary shadow-card hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+          >
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="w-14 h-14 rounded-xl bg-status-success-tint text-status-success flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <LayoutDashboard className="w-7 h-7" />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-status-success bg-status-success-tint px-3 py-1 rounded-full">
+                  Figma Page 08
+                </span>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-bold font-heading text-text-primary group-hover:text-brand-primary transition-colors">
+                  Admin Dashboard
+                </h2>
+                <p className="text-sm text-text-secondary mt-2 leading-relaxed">
+                  For property and building managers. Monitor 20 machines across Room A & B,
+                  review live activity, approve residents, configure building rules and flat prices.
+                </p>
+              </div>
+
+              <div className="space-y-2 text-xs text-text-secondary pt-2 border-t border-border-default/60">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-status-success flex-shrink-0" />
+                  <span>Full 1440px desktop building management portal</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-status-success flex-shrink-0" />
+                  <span>Interactive rules (hold minutes, quiet hours, prices)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-status-success flex-shrink-0" />
+                  <span>Residents management, Stripe payouts & live activity</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 flex items-center gap-2 text-sm font-bold text-brand-primary group-hover:translate-x-1 transition-transform">
+              <span>Open Admin Dashboard</span>
+              <ArrowRight className="w-4 h-4" />
+            </div>
+          </Link>
         </div>
-      )}
+      </main>
+
+      {/* Footer */}
+      <footer className="px-6 py-6 border-t border-border-default/80 text-center text-xs text-text-secondary">
+        <div>WashEase · Wilhelmstr. 12, 79098 Freiburg · Built from Figma Design Specs</div>
+      </footer>
     </div>
   );
 }

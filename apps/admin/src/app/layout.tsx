@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'WashEase Admin — Shared Laundry Management',
-  description: 'Building management portal for WashEase laundry rooms and machines.',
+  title: 'WashEase — Shared Laundry Booking & Management',
+  description: 'Reserve a free washer or dryer now, unlock with your phone, or manage building laundry facilities.',
 };
 
 export default function RootLayout({
@@ -21,8 +21,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body className="antialiased font-body">{children}</body>
     </html>
   );
 }
-

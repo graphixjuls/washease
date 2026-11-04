@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FloatingTabBar, ResidentTab } from './FloatingTabBar';
 import { StepRow } from './StepRow';
 import { StatusBadge } from '../StatusBadge';
@@ -17,6 +18,9 @@ import {
   RotateCcw,
   Receipt,
   ShieldAlert,
+  Moon,
+  Sun,
+  LayoutDashboard,
 } from 'lucide-react';
 
 export type ScreenState =
@@ -41,13 +45,11 @@ interface ActiveCycle {
   totalMinutes: number;
 }
 
-interface ResidentAppProps {
-  onSwitchToAdmin?: () => void;
-}
-
-export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
+export function ResidentApp() {
   const [screen, setScreen] = useState<ScreenState>('home');
   const [activeTab, setActiveTab] = useState<ResidentTab>('home');
+  const [isDark, setIsDark] = useState<boolean>(false);
+
   const [selectedMachine, setSelectedMachine] = useState<{
     id: string;
     name: string;
@@ -70,6 +72,24 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
 
   // Filter tabs for All Machines
   const [machineTypeTab, setMachineTypeTab] = useState<'washer' | 'dryer'>('washer');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) {
+        setIsDark(true);
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    setIsDark((prev) => {
+      const next = !prev;
+      document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
+      return next;
+    });
+  };
 
   // Countdown effect when in 'reserved' state
   useEffect(() => {
@@ -135,26 +155,47 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
   };
 
   return (
-    <div className="relative min-h-screen bg-canvas text-text-primary flex flex-col items-center">
-      {/* Mobile container viewport */}
-      <div className="w-full max-w-md min-h-screen bg-canvas flex flex-col relative pb-32">
-        {/* Top Native-style Bar */}
-        <div className="h-11 px-6 flex items-center justify-between text-xs text-text-secondary select-none">
-          <span className="font-semibold text-text-primary">09:41</span>
-          <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-mono">5G</span>
-            <div className="w-5 h-2.5 rounded-sm border border-text-secondary flex items-center p-0.5">
-              <div className="w-full h-full bg-text-primary rounded-2xs" />
+    <div className="min-h-screen bg-canvas text-text-primary flex justify-center selection:bg-brand-tint">
+      {/* Container: 100% full width on mobile (screen side padding 24px as per design spec), centered on larger screens */}
+      <div className="w-full max-w-lg min-h-screen bg-canvas flex flex-col relative pb-32">
+        {/* Top App Header */}
+        <header className="px-6 py-4 flex items-center justify-between border-b border-border-default/60 bg-canvas/80 backdrop-blur-md sticky top-0 z-30">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-md bg-brand-primary flex items-center justify-center text-text-on-brand font-bold text-sm shadow">
+              W
+            </div>
+            <div>
+              <div className="font-heading font-bold text-base text-text-primary leading-tight">
+                WashEase
+              </div>
+              <div className="text-[11px] text-text-secondary">Resident App</div>
             </div>
           </div>
-        </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-subtle transition-colors"
+              title="Toggle theme"
+            >
+              {isDark ? <Moon className="w-4 h-4 text-brand-primary" /> : <Sun className="w-4 h-4 text-status-warning" />}
+            </button>
+            <Link
+              href="/admin"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-subtle text-text-secondary hover:text-text-primary hover:bg-border-default transition-colors"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5" />
+              <span>Admin</span>
+            </Link>
+          </div>
+        </header>
 
         {/* ========================================================
-            SCREEN 1: WELCOME
+            SCREEN 1: WELCOME (Figma Screen 1)
            ======================================================== */}
         {screen === 'welcome' && (
           <div className="flex-1 flex flex-col justify-between p-6 animate-fadeIn">
-            <div className="pt-6 text-center space-y-4">
+            <div className="pt-8 text-center space-y-4">
               <div className="relative w-64 h-64 mx-auto rounded-2xl bg-brand-tint p-4 flex items-center justify-center overflow-hidden">
                 <Image
                   src="/illustrations/hero.png"
@@ -192,7 +233,7 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
         )}
 
         {/* ========================================================
-            SCREEN 2: VERIFY BUILDING
+            SCREEN 2: VERIFY BUILDING (Figma Screen 2)
            ======================================================== */}
         {screen === 'verify' && (
           <div className="flex-1 flex flex-col justify-between p-6 animate-fadeIn">
@@ -253,11 +294,11 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
         )}
 
         {/* ========================================================
-            SCREEN 3: HOME
+            SCREEN 3: HOME (Figma Screen 3)
            ======================================================== */}
         {screen === 'home' && (
           <div className="flex-1 p-6 space-y-6 animate-fadeIn">
-            {/* Header */}
+            {/* Header location */}
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-xs text-text-secondary font-medium">Your building</span>
@@ -292,7 +333,7 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
               </button>
             </div>
 
-            {/* Quick Action Cards (Room A & Room B) */}
+            {/* Room A Machines */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-bold font-heading text-text-primary">
@@ -302,8 +343,8 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
               </div>
 
               {/* Washer 01 Card */}
-              <div className="p-4 rounded-xl bg-surface border border-border-default shadow-card flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3.5">
+              <div className="p-4 rounded-xl bg-surface border border-border-default shadow-card flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3.5 min-w-0">
                   <div className="w-14 h-14 rounded-lg bg-brand-tint flex items-center justify-center p-1.5 flex-shrink-0">
                     <Image
                       src="/illustrations/washer.png"
@@ -313,15 +354,15 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
                       className="object-contain"
                     />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-text-primary text-base">Washer 01</span>
                       <StatusBadge status="available" />
                     </div>
-                    <div className="text-xs text-text-secondary mt-0.5">
+                    <div className="text-xs text-text-secondary mt-0.5 truncate">
                       Miele PWM 507 · 8 kg
                     </div>
-                    <div className="text-xs font-semibold text-brand-primary mt-1">
+                    <div className="text-xs font-semibold text-brand-primary mt-1 truncate">
                       €3.00 per wash · charged at start
                     </div>
                   </div>
@@ -344,8 +385,8 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
               </div>
 
               {/* Dryer 01 Card */}
-              <div className="p-4 rounded-xl bg-surface border border-border-default shadow-card flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3.5">
+              <div className="p-4 rounded-xl bg-surface border border-border-default shadow-card flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3.5 min-w-0">
                   <div className="w-14 h-14 rounded-lg bg-brand-tint flex items-center justify-center p-1.5 flex-shrink-0">
                     <Image
                       src="/illustrations/dryer.png"
@@ -355,15 +396,15 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
                       className="object-contain"
                     />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-text-primary text-base">Dryer 01</span>
                       <StatusBadge status="available" />
                     </div>
-                    <div className="text-xs text-text-secondary mt-0.5">
+                    <div className="text-xs text-text-secondary mt-0.5 truncate">
                       Miele PDR 507 · 8 kg
                     </div>
-                    <div className="text-xs font-semibold text-brand-primary mt-1">
+                    <div className="text-xs font-semibold text-brand-primary mt-1 truncate">
                       €2.00 per dry · charged at start
                     </div>
                   </div>
@@ -386,8 +427,8 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
               </div>
 
               {/* Washer 02 (In use example) */}
-              <div className="p-4 rounded-xl bg-surface border border-border-default opacity-90 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3.5">
+              <div className="p-4 rounded-xl bg-surface border border-border-default opacity-90 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3.5 min-w-0">
                   <div className="w-14 h-14 rounded-lg bg-subtle flex items-center justify-center p-1.5 flex-shrink-0">
                     <Image
                       src="/illustrations/washer.png"
@@ -397,15 +438,15 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
                       className="object-contain opacity-75"
                     />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-text-primary text-base">Washer 02</span>
                       <StatusBadge status="running" labelOverride="In use" />
                     </div>
-                    <div className="text-xs text-status-warning-text font-medium mt-0.5">
+                    <div className="text-xs text-status-warning-text font-medium mt-0.5 truncate">
                       Cotton 60°C · ~25 min left
                     </div>
-                    <div className="text-xs text-text-disabled mt-0.5">
+                    <div className="text-xs text-text-disabled mt-0.5 truncate">
                       €3.00 · Finishes at 10:15
                     </div>
                   </div>
@@ -422,7 +463,7 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
         )}
 
         {/* ========================================================
-            SCREEN 3b: ALL MACHINES (BY TYPE)
+            SCREEN 3b: ALL MACHINES (BY TYPE) (Figma Screen 3b)
            ======================================================== */}
         {screen === 'all-machines' && (
           <div className="flex-1 p-6 space-y-6 animate-fadeIn">
@@ -539,7 +580,7 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
         )}
 
         {/* ========================================================
-            SCREEN 4: RESERVE MACHINE
+            SCREEN 4: RESERVE MACHINE (Figma Screen 4)
            ======================================================== */}
         {screen === 'reserve' && (
           <div className="flex-1 flex flex-col justify-between p-6 animate-fadeIn">
@@ -618,7 +659,7 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
         )}
 
         {/* ========================================================
-            SCREEN 5: RESERVED (COUNTDOWN)
+            SCREEN 5: RESERVED (COUNTDOWN) (Figma Screen 5)
            ======================================================== */}
         {screen === 'reserved' && (
           <div className="flex-1 flex flex-col justify-between p-6 animate-fadeIn">
@@ -677,7 +718,7 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
         )}
 
         {/* ========================================================
-            SCREEN 6: UNLOCK
+            SCREEN 6: UNLOCK (Figma Screen 6)
            ======================================================== */}
         {screen === 'unlock' && (
           <div className="flex-1 flex flex-col justify-between p-6 animate-fadeIn">
@@ -729,7 +770,7 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
         )}
 
         {/* ========================================================
-            SCREEN 7: RUNNING
+            SCREEN 7: RUNNING (Figma Screen 7)
            ======================================================== */}
         {screen === 'running' && activeCycle && (
           <div className="flex-1 flex flex-col justify-between p-6 animate-fadeIn">
@@ -791,7 +832,7 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
         )}
 
         {/* ========================================================
-            SCREEN 8: DONE
+            SCREEN 8: DONE (Figma Screen 8)
            ======================================================== */}
         {screen === 'done' && (
           <div className="flex-1 flex flex-col justify-between p-6 animate-fadeIn">
@@ -859,7 +900,7 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
         )}
 
         {/* ========================================================
-            TAB: MY LAUNDRY
+            TAB: MY LAUNDRY (Figma Screen 11 & 12)
            ======================================================== */}
         {activeTab === 'laundry' && screen !== 'running' && screen !== 'reserved' && (
           <div className="flex-1 p-6 space-y-6 animate-fadeIn">
@@ -963,14 +1004,12 @@ export function ResidentApp({ onSwitchToAdmin }: ResidentAppProps) {
               </div>
             </div>
 
-            {onSwitchToAdmin && (
-              <button
-                onClick={onSwitchToAdmin}
-                className="w-full p-4 rounded-xl bg-brand-tint text-brand-primary text-xs font-bold hover:bg-brand-primary hover:text-white transition-all text-center border border-brand-primary/20 shadow"
-              >
-                Switch to Building Manager Admin Web →
-              </button>
-            )}
+            <Link
+              href="/admin"
+              className="block w-full p-4 rounded-xl bg-brand-tint text-brand-primary text-xs font-bold hover:bg-brand-primary hover:text-white transition-all text-center border border-brand-primary/20 shadow"
+            >
+              Switch to Building Manager Admin Web →
+            </Link>
           </div>
         )}
 
