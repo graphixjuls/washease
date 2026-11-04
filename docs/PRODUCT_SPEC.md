@@ -11,7 +11,7 @@ Market: shared residential buildings, pilot in Freiburg im Breisgau (DE). Curren
 
 | # | Insight (assumption until validated in interviews) | What we built | Where |
 |---|---|---|---|
-| 1 | The first question is “is one free right now?”, not “when can I book?” | Live availability first: a banner like “3 of 6 machines free now” and a status on every machine | Home |
+| 1 | The first question is “is one free right now?”, not “when can I book?” | Live availability first: a banner like “10 of 20 machines free now” and a status on every machine | Home |
 | 2 | Laundry doesn't fit a slot: programs run 30 min–3 h and people decide at the machine | **No time slots.** Reserve now; program and duration are chosen on the machine | Reserve, Unlock |
 | 3 | The walk downstairs is the risk: the machine gets taken, or clothes get moved | A 10-minute hold that only you can unlock, plus a collection reminder | Reserved, Done |
 | 4 | Payment is friction (coins, cards, price confusion) | One flat price per cycle, charged automatically at start | Reserve, Payments |
@@ -111,7 +111,7 @@ Row-level security:
 ### Resident app (Figma page 07)
 1. **Welcome:** hero illustration, value proposition, “Get started” and “I already have an account”.
 2. **Verify building:** 6-digit invite code or QR, a “building found” confirmation, and “Join building”. Without a code, the resident asks the manager for access.
-3. **Home:** location, availability banner (“3 of 6 machines free now”), and machine cards by room. Each card shows status, price, and either **Reserve** (when free) or **Notify me** (when in use, with an estimate like “Free in about 25 min” taken from the machine timer).
+3. **Home:** location, availability banner (“10 of 20 machines free now”), and machine cards by room. Each card shows status, price, and either **Reserve** (when free) or **Notify me** (when in use, with an estimate like “Free in about 25 min” taken from the machine timer).
 3b. **All machines (by type):** tabs for Washers · N free and Dryers · N free. Each tab shows:
    - A ring summary (free / in use / out of order) with “Next one frees up in X min”.
    - **Free now** buttons, one per free machine; tap one to reserve it.
