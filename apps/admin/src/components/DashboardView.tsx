@@ -46,19 +46,21 @@ export function DashboardView({ onNavigate }: DashboardViewProps) {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8 min-w-0">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold font-heading text-text-primary">Dashboard</h1>
-          <p className="text-sm text-text-secondary mt-1">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold font-heading text-text-primary truncate">
+            Dashboard
+          </h1>
+          <p className="text-xs sm:text-sm text-text-secondary mt-0.5 truncate">
             Real-time status of 20 machines at Wilhelmstr. 12, 79098 Freiburg
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-status-success-tint text-status-success">
+        <div className="flex items-center gap-2 self-start sm:self-auto flex-shrink-0">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-status-success-tint text-status-success">
             <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
-            Simulator & Gateway Online
+            Simulator Online
           </span>
         </div>
       </div>
@@ -74,70 +76,70 @@ export function DashboardView({ onNavigate }: DashboardViewProps) {
         <StatTile
           label="Utilisation"
           value="78%"
-          note="Peak hours 17:00–21:00"
+          note="Peak 17:00–21:00"
           icon={<TrendingUp className="w-5 h-5" />}
         />
         <StatTile
           label="Revenue today"
           value="€126.00"
-          note="34 washes (€102) · 12 dries (€24)"
+          note="34 washes · 12 dries"
           icon={<Zap className="w-5 h-5" />}
         />
         <StatTile
           label="Machines offline"
           value="0"
-          note="All 20 machines healthy"
+          note="All 20 healthy"
           icon={<AlertCircle className="w-5 h-5" />}
         />
       </div>
 
       {/* Two columns: Needs Attention + Quick Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 min-w-0">
         {/* Left Column: Live machine glance */}
-        <div className="lg:col-span-2 bg-surface rounded-lg p-6 border border-border-default shadow-card">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-lg font-bold font-heading text-text-primary">
+        <div className="lg:col-span-2 bg-surface rounded-lg p-5 sm:p-6 border border-border-default shadow-card min-w-0">
+          <div className="flex items-center justify-between gap-2 mb-5">
+            <div className="min-w-0">
+              <h2 className="text-base sm:text-lg font-bold font-heading text-text-primary truncate">
                 Live Machines Right Now
               </h2>
-              <p className="text-xs text-text-secondary">
+              <p className="text-xs text-text-secondary truncate">
                 12 Available · 6 In use · 2 Reserved
               </p>
             </div>
             <button
               onClick={() => onNavigate('machines')}
-              className="text-xs font-semibold text-brand-primary flex items-center gap-1 hover:underline"
+              className="text-xs font-semibold text-brand-primary flex items-center gap-1 hover:underline flex-shrink-0"
             >
-              View all 20 machines <ArrowRight className="w-3.5 h-3.5" />
+              View all 20 <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3 min-w-0">
             {recentActivity.map((act) => (
               <div
                 key={act.id}
-                className="flex items-center justify-between p-3.5 rounded-md bg-canvas border border-border-default"
+                className="flex items-center justify-between p-3.5 rounded-md bg-canvas border border-border-default gap-3 min-w-0"
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-md bg-brand-tint text-brand-primary font-bold text-xs flex items-center justify-center">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-md bg-brand-tint text-brand-primary font-bold text-xs flex items-center justify-center flex-shrink-0">
                     {act.machine.split(' ')[0][0]}
                     {act.machine.split(' ')[1]}
                   </div>
-                  <div>
-                    <div className="text-sm font-semibold text-text-primary">
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold text-text-primary truncate">
                       {act.machine}{' '}
                       <span className="text-xs font-normal text-text-secondary">
                         ({act.room})
                       </span>
                     </div>
-                    <div className="text-xs text-text-secondary">
+                    <div className="text-xs text-text-secondary truncate">
                       {act.resident} · {act.details}
                     </div>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-right flex-shrink-0">
                   <StatusBadge status={act.status} />
-                  <div className="text-[11px] text-text-disabled mt-1">{act.time}</div>
+                  <div className="text-[10px] text-text-disabled mt-1">{act.time}</div>
                 </div>
               </div>
             ))}
@@ -145,13 +147,13 @@ export function DashboardView({ onNavigate }: DashboardViewProps) {
         </div>
 
         {/* Right Column: Needs attention */}
-        <div className="bg-surface rounded-lg p-6 border border-border-default shadow-card flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold font-heading text-text-primary">
+        <div className="bg-surface rounded-lg p-5 sm:p-6 border border-border-default shadow-card flex flex-col justify-between min-w-0">
+          <div className="min-w-0">
+            <div className="flex items-center justify-between mb-3 gap-2">
+              <h2 className="text-base sm:text-lg font-bold font-heading text-text-primary truncate">
                 Needs Attention
               </h2>
-              <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-brand-tint text-brand-primary">
+              <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-brand-tint text-brand-primary flex-shrink-0">
                 1 pending
               </span>
             </div>
@@ -168,8 +170,8 @@ export function DashboardView({ onNavigate }: DashboardViewProps) {
             />
           </div>
 
-          <div className="mt-6 pt-4 border-t border-border-default">
-            <div className="text-xs text-text-secondary">
+          <div className="mt-6 pt-4 border-t border-border-default min-w-0">
+            <div className="text-xs text-text-secondary truncate">
               Invite code for building Wilhelmstr. 12:
             </div>
             <div className="text-xl font-bold font-heading tracking-widest text-brand-primary mt-1">
@@ -181,4 +183,3 @@ export function DashboardView({ onNavigate }: DashboardViewProps) {
     </div>
   );
 }
-

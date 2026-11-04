@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { StatusBadge, BadgeStatus } from './StatusBadge';
-import { Disc, Filter, AlertTriangle } from 'lucide-react';
+import { Disc } from 'lucide-react';
 
 interface MachineItem {
   id: string;
@@ -18,7 +18,6 @@ interface MachineItem {
 }
 
 const INITIAL_MACHINES: MachineItem[] = [
-  // Room A - 5 Washers, 5 Dryers
   { id: 'w01', name: 'Washer 01', type: 'washer', room: 'Room A', model: 'Miele PWM 507', capacity: '8 kg', status: 'available', price: '€3.00' },
   { id: 'w02', name: 'Washer 02', type: 'washer', room: 'Room A', model: 'Miele PWM 507', capacity: '8 kg', status: 'running', currentProgram: 'Cotton 60°C', timeLeft: '38 min left', price: '€3.00' },
   { id: 'w03', name: 'Washer 03', type: 'washer', room: 'Room A', model: 'Miele PWM 507', capacity: '8 kg', status: 'available', price: '€3.00' },
@@ -29,8 +28,6 @@ const INITIAL_MACHINES: MachineItem[] = [
   { id: 'd03', name: 'Dryer 03', type: 'dryer', room: 'Room A', model: 'Miele PDR 507', capacity: '8 kg', status: 'available', price: '€2.00' },
   { id: 'd04', name: 'Dryer 04', type: 'dryer', room: 'Room A', model: 'Miele PDR 507', capacity: '8 kg', status: 'available', price: '€2.00' },
   { id: 'd05', name: 'Dryer 05', type: 'dryer', room: 'Room A', model: 'Miele PDR 507', capacity: '8 kg', status: 'available', price: '€2.00' },
-
-  // Room B - 5 Washers, 5 Dryers
   { id: 'w06', name: 'Washer 06', type: 'washer', room: 'Room B', model: 'Miele PWM 507', capacity: '8 kg', status: 'available', price: '€3.00' },
   { id: 'w07', name: 'Washer 07', type: 'washer', room: 'Room B', model: 'Miele PWM 507', capacity: '8 kg', status: 'running', currentProgram: 'Eco 40°C', timeLeft: '24 min left', price: '€3.00' },
   { id: 'w08', name: 'Washer 08', type: 'washer', room: 'Room B', model: 'Miele PWM 507', capacity: '8 kg', status: 'available', price: '€3.00' },
@@ -76,23 +73,25 @@ export function MachinesView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 min-w-0">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold font-heading text-text-primary">Machines</h1>
-          <p className="text-sm text-text-secondary mt-1">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold font-heading text-text-primary truncate">
+            Machines
+          </h1>
+          <p className="text-xs sm:text-sm text-text-secondary mt-0.5 truncate">
             20 Miele professional machines across Room A & Room B
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Room filter tabs */}
           <div className="flex items-center bg-subtle p-1 rounded-md border border-border-default text-xs font-semibold">
             {['all', 'Room A', 'Room B'].map((r) => (
               <button
                 key={r}
                 onClick={() => setFilterRoom(r)}
-                className={`px-3 py-1.5 rounded-sm transition-colors ${
+                className={`px-2.5 py-1 rounded-sm transition-colors whitespace-nowrap ${
                   filterRoom === r
                     ? 'bg-surface text-brand-primary shadow-sm'
                     : 'text-text-secondary hover:text-text-primary'
@@ -109,7 +108,7 @@ export function MachinesView() {
               <button
                 key={t}
                 onClick={() => setFilterType(t)}
-                className={`px-3 py-1.5 rounded-sm capitalize transition-colors ${
+                className={`px-2.5 py-1 rounded-sm capitalize transition-colors whitespace-nowrap ${
                   filterType === t
                     ? 'bg-surface text-brand-primary shadow-sm'
                     : 'text-text-secondary hover:text-text-primary'
@@ -123,17 +122,17 @@ export function MachinesView() {
       </div>
 
       {/* Machine Table */}
-      <div className="bg-surface rounded-lg border border-border-default shadow-card overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+      <div className="bg-surface rounded-lg border border-border-default shadow-card overflow-hidden min-w-0">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left text-sm min-w-[640px]">
             <thead className="bg-subtle text-text-secondary text-xs font-semibold border-b border-border-default">
               <tr>
-                <th className="px-6 py-3.5">Machine</th>
-                <th className="px-6 py-3.5">Type & Room</th>
-                <th className="px-6 py-3.5">Model & Spec</th>
-                <th className="px-6 py-3.5">Status</th>
-                <th className="px-6 py-3.5">Price</th>
-                <th className="px-6 py-3.5 text-right">Actions</th>
+                <th className="px-5 py-3 whitespace-nowrap">Machine</th>
+                <th className="px-5 py-3 whitespace-nowrap">Type & Room</th>
+                <th className="px-5 py-3 whitespace-nowrap">Model & Spec</th>
+                <th className="px-5 py-3 whitespace-nowrap">Status</th>
+                <th className="px-5 py-3 whitespace-nowrap">Price</th>
+                <th className="px-5 py-3 text-right whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border-default">
@@ -143,17 +142,17 @@ export function MachinesView() {
                   className="hover:bg-canvas transition-colors cursor-pointer"
                   onClick={() => setSelectedMachine(m)}
                 >
-                  <td className="px-6 py-4 font-semibold text-text-primary flex items-center gap-3">
-                    <Disc className="w-4 h-4 text-brand-primary" />
+                  <td className="px-5 py-3.5 font-semibold text-text-primary flex items-center gap-2.5 whitespace-nowrap">
+                    <Disc className="w-4 h-4 text-brand-primary flex-shrink-0" />
                     <span>{m.name}</span>
                   </td>
-                  <td className="px-6 py-4 text-text-secondary">
+                  <td className="px-5 py-3.5 text-text-secondary whitespace-nowrap">
                     <span className="capitalize">{m.type}</span> · {m.room}
                   </td>
-                  <td className="px-6 py-4 text-text-secondary text-xs">
+                  <td className="px-5 py-3.5 text-text-secondary text-xs whitespace-nowrap">
                     {m.model} ({m.capacity})
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-5 py-3.5 whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       <StatusBadge status={m.status} />
                       {m.timeLeft && (
@@ -163,8 +162,10 @@ export function MachinesView() {
                       )}
                     </div>
                   </td>
-                  <td className="px-6 py-4 font-medium text-text-primary">{m.price}</td>
-                  <td className="px-6 py-4 text-right" onClick={(e) => e.stopPropagation()}>
+                  <td className="px-5 py-3.5 font-medium text-text-primary whitespace-nowrap">
+                    {m.price}
+                  </td>
+                  <td className="px-5 py-3.5 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                     <button
                       onClick={() => toggleOutOfOrder(m.id)}
                       className={`text-xs px-2.5 py-1 rounded font-medium transition-colors ${
@@ -183,11 +184,11 @@ export function MachinesView() {
         </div>
       </div>
 
-      {/* Machine Detail Modal / Drawer */}
+      {/* Machine Detail Modal */}
       {selectedMachine && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-surface rounded-xl border border-border-default shadow-2xl max-w-lg w-full p-6 space-y-6">
-            <div className="flex items-center justify-between border-b border-border-default pb-4">
+          <div className="bg-surface rounded-xl border border-border-default shadow-2xl max-w-lg w-full p-6 space-y-5">
+            <div className="flex items-center justify-between border-b border-border-default pb-3">
               <div>
                 <h3 className="text-xl font-bold font-heading text-text-primary">
                   {selectedMachine.name}
@@ -199,7 +200,7 @@ export function MachinesView() {
               <StatusBadge status={selectedMachine.status} />
             </div>
 
-            <div className="space-y-3 text-sm">
+            <div className="space-y-2.5 text-sm">
               <div className="flex justify-between py-1 border-b border-border-default">
                 <span className="text-text-secondary">Machine Type</span>
                 <span className="font-semibold text-text-primary capitalize">
@@ -228,7 +229,7 @@ export function MachinesView() {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-default">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-border-default">
               <button
                 onClick={() => setSelectedMachine(null)}
                 className="px-4 py-2 rounded-md text-sm font-semibold text-text-secondary hover:bg-canvas transition-colors"
@@ -254,4 +255,3 @@ export function MachinesView() {
     </div>
   );
 }
-
