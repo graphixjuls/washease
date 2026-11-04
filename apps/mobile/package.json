@@ -1,0 +1,9 @@
+{
+  "name": "@washease/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node -e \"console.log('WashEase Resident Mobile App ready. Run expo start.')\""
+  }
+}
+

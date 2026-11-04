@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* WashEase Design Tokens (Fresh Aqua) */
+:root {
+  --we-bg-canvas: #F6F9FF;
+  --we-bg-surface: #FFFFFF;
+  --we-bg-subtle: #EEF3FC;
+  --we-text-primary: #0E1B3D;
+  --we-text-secondary: #55607A;
+  --we-text-disabled: #A3ABBE;
+  --we-text-on-brand: #FFFFFF;
+  --we-brand-primary: #2F5BEA;
+  --we-brand-strong: #1F43C2;
+  --we-brand-tint: #E8EFFF;
+  --we-brand-accent: #3CC8C8;
+  --we-border-default: #DDE4F0;
+  --we-border-strong: #2F5BEA;
+  --we-status-success: #0F7A55;
+  --we-status-success-tint: #E1F6EE;
+  --we-status-warning: #F5A524;
+  --we-status-warning-text: #8A5A0F;
+  --we-status-warning-tint: #FFF4E0;
+  --we-status-danger: #C2343F;
+  --we-status-danger-tint: #FDE8EA;
+  --we-status-info: #1F6FB2;
+
+  --we-space-1: 4px;
+  --we-space-2: 8px;
+  --we-space-3: 12px;
+  --we-space-4: 16px;
+  --we-space-6: 24px;
+  --we-space-8: 32px;
+  --we-space-12: 48px;
+
+  --we-radius-sm: 8px;
+  --we-radius-md: 12px;
+  --we-radius-lg: 18px;
+  --we-radius-xl: 24px;
+  --we-radius-full: 999px;
+
+  --we-shadow-card: 0 4px 14px rgba(0, 0, 0, 0.06);
+  --we-font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
+  --we-font-body: "Inter", system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --we-bg-canvas: #0B1220;
+    --we-bg-surface: #131C2E;
+    --we-bg-subtle: #1C2740;
+    --we-text-primary: #EEF2FB;
+    --we-text-secondary: #A9B3C8;
+    --we-text-disabled: #5B6680;
+    --we-text-on-brand: #0B1220;
+    --we-brand-primary: #7C9BFF;
+    --we-brand-strong: #A3B8FF;
+    --we-brand-tint: #1D2A4D;
+    --we-brand-accent: #5ED9D9;
+    --we-border-default: #2A3654;
+    --we-border-strong: #7C9BFF;
+    --we-status-success: #5DD6A4;
+    --we-status-success-tint: #11302A;
+    --we-status-warning: #F7B955;
+    --we-status-warning-text: #F5C978;
+    --we-status-warning-tint: #3A2C14;
+    --we-status-danger: #F38C93;
+    --we-status-danger-tint: #3D1C22;
+    --we-status-info: #82B8F1;
+  }
+}
+
+:root[data-theme="dark"] {
+  --we-bg-canvas: #0B1220;
+  --we-bg-surface: #131C2E;
+  --we-bg-subtle: #1C2740;
+  --we-text-primary: #EEF2FB;
+  --we-text-secondary: #A9B3C8;
+  --we-text-disabled: #5B6680;
+  --we-text-on-brand: #0B1220;
+  --we-brand-primary: #7C9BFF;
+  --we-brand-strong: #A3B8FF;
+  --we-brand-tint: #1D2A4D;
+  --we-brand-accent: #5ED9D9;
+  --we-border-default: #2A3654;
+  --we-border-strong: #7C9BFF;
+  --we-status-success: #5DD6A4;
+  --we-status-success-tint: #11302A;
+  --we-status-warning: #F7B955;
+  --we-status-warning-text: #F5C978;
+  --we-status-warning-tint: #3A2C14;
+  --we-status-danger: #F38C93;
+  --we-status-danger-tint: #3D1C22;
+  --we-status-info: #82B8F1;
+}
+
+body {
+  background-color: var(--we-bg-canvas);
+  color: var(--we-text-primary);
+  font-family: var(--we-font-body);
+}
+

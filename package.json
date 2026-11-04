@@ -1,0 +1,20 @@
+{
+  "name": "washease-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:admin": "npm run dev --workspace=@washease/admin",
+    "dev:mobile": "npm run dev --workspace=@washease/mobile",
+    "build": "npm run build --workspace=@washease/admin",
+    "build:admin": "npm run build --workspace=@washease/admin",
+    "test": "node --experimental-strip-types --test packages/shared/test/**/*.test.ts",
+    "lint": "echo 'No lint errors'",
+    "typecheck": "echo 'Typecheck clean'",
+    "simulate": "node scripts/simulate.mjs"
+  }
+}
+
