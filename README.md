@@ -28,7 +28,7 @@ assets/illustrations/   ← hero, washer, dryer, empty-state (PNG)
 3. Let it work one phase at a time, and review its summary after each phase before saying “continue”.
 
 ## GitHub
-This folder is on GitHub at https://github.com/graphixjuls/washease (private).
+This folder is on GitHub at https://github.com/graphixjuls/washease (public).
 
 After Antigravity finishes a phase, commit and push from its terminal (**Terminal → New Terminal**):
 ```bash
